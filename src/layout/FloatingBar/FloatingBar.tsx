@@ -51,17 +51,17 @@ const FloatingBar = ({ isVisible }: { isVisible: boolean }) => {
 
   return (
     <Nav isVisible={isVisible}>
-      <Button onClick={handleCount}>
+      {/* <Button onClick={handleCount}>
         <Heart fill="#e88ca6" />
-        {/*{count || ''}*/}
-      </Button>
-      <Button onClick={handleCopy}>
+        {count || ''}
+      </Button> */}
+      {/* <Button onClick={handleCopy}>
         <Share fill="#e88ca6" />
         공유
-      </Button>
+      </Button> */}
       <Button onClick={handleScroll}>
         <Upward fill="#e88ca6" />
-        위로
+        {/* 위로 */}
       </Button>
     </Nav>
   );
@@ -72,7 +72,7 @@ export default FloatingBar;
 const Nav = styled.nav<{ isVisible: boolean }>`
   min-width: 280px;
   position: fixed;
-  bottom: 30px;
+  bottom: 70px;
   left: 0;
   right: 0;
   align-items: center;

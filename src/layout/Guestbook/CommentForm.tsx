@@ -1,14 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { push, ref, serverTimestamp } from 'firebase/database';
+import { push, ref, serverTimestamp, runTransaction, onValue } from 'firebase/database';
 import { realtimeDb } from '../../firebase.ts';
+import JSConfetti from 'js-confetti';
+import data from 'data.json';
+
+
 
 // TODO: 방명록 기능 사용시, realtime db에 guestbook 추가
 const guestbookRef = ref(realtimeDb, 'guestbook');
+const likesRef = ref(realtimeDb, 'likes/count');
+const jsConfetti = new JSConfetti();
 
 const CommentForm = () => {
   const [name, setName] = useState<string>('');
   const [message, setMessage] = useState<string>('');
+  const [likes, setLikes] = useState<number>(0);
+  const { emojis } = data;
+
+  useEffect(() => {
+    const unsubscribe = onValue(likesRef, (snapshot) => {
+      const value = snapshot.val();
+      setLikes(value ?? 0);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!name || !message) {
@@ -24,10 +40,15 @@ const CommentForm = () => {
       };
       void push(guestbookRef, guestbookMessage);
       
-      alert('메시지를 보냈습니다. 💌');
+      alert('소중한 메시지 감사합니다❤️\n아래 축하해요 버튼을 누르고 초콜릿을 찾아보세요~🍫');
       setName('');
       setMessage('');
     }
+  };
+
+  const handleLike = () => {
+    void jsConfetti.addConfetti({ emojis, confettiNumber: 1, emojiSize: 70 });
+    runTransaction(likesRef, (current) => (current || 0) + 1);
   };
 
   return (
@@ -44,6 +65,9 @@ const CommentForm = () => {
         onChange={(e) => setMessage(e.target.value)}
       />
       <SubmitButton type="submit">등록</SubmitButton>
+      <LikeButton type="button" onClick={handleLike}>
+        ❤️ 축하해요~ ❤️<br />많은 하객분들로부터 {likes} 번 축하 받았습니다.
+      </LikeButton>
     </FormWrapper>
   );
 };
@@ -96,4 +120,19 @@ const SubmitButton = styled.button`
   font-weight: inherit;
   color: inherit;
 `;
+
+const LikeButton = styled.button`
+  margin-top: 12px;
+  background: #ffe3e3;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  &:hover {
+    background: #ffcad4;
+  }
+`;
+
 export default CommentForm;

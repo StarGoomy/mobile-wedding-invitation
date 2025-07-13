@@ -6,9 +6,9 @@ const Guestbook = () => {
   return (
     <GuestBookWrapper>
       <Heading2>
-        메시지를 남겨주세요.
+        🎉축하 메시지를 남겨주세요🎉
         <br />
-        결혼식 이후, 신랑 신부에게 전달됩니다.
+        저희 부부가 소중히 읽고 간직하겠습니다.
       </Heading2>
       <CommentForm />
     </GuestBookWrapper>
@@ -21,5 +21,5 @@ const GuestBookWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 50px;
+  margin-bottom: 80px;
 `;
