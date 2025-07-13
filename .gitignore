@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .env
+
+# Private files
+# src/firebase.ts       # 이건 .env에서 관리하는걸로.
