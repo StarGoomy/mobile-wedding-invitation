@@ -12,5 +12,10 @@ const Container = styled.div`
   @media screen and (min-width: 500px) {
       width: 500px; /* 500 */
   }
+
+  @media (prefers-color-scheme: dark) {
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
 `;
 export default Container;
